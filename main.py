@@ -1,6 +1,15 @@
 #!/bin/env python3
 
-book_path = "./books/frankenstein.txt"
+import sys
+from stats import get_num_words
+
+# book_path = "./books/frankenstein.txt"
+
+if len(sys.argv) != 2:
+    print("Usage: python3 main.py <path_to_book>")
+    sys.exit(1)
+
+book_path = sys.argv[1]
 
 # reading the file
 with open(book_path) as file:
@@ -10,19 +19,7 @@ words = file_contents.split()
 
 # print(len(words))
 
-# empty dict
-
-letter_count = {}
-
-# count words 
-for word in words:
-    for char in word.lower():
-        if char in letter_count:
-            letter_count[char] += 1
-        else:
-            letter_count[char] = 1
-
-# print(letter_count)
+letter_count = get_num_words(words)
 
 print("--- Begin report of " + book_path + " ---")
 print(f"{len(words)} words found in the document")
@@ -31,6 +28,6 @@ print(f"{len(words)} words found in the document")
 
 for key, value in dict(sorted(letter_count.items(), key=lambda item: item[1], reverse=True)).items():
     if key.isalpha():
-        print(f"the '{key}' character was found {value} times")
+        print(f"'{key}: {value}'")
 
 print("--- End report ---")
